@@ -12,8 +12,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 
 /***
  * Class SourceKafkaConsumer
@@ -23,6 +23,28 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class SourceKafkaConsumer {
+
+    @Value("${source.bootstrap-servers}")
+    public String bootstrapServers;
+
+    @Value("${source.topic}")
+    public String topic;
+
+    @Value("${source.group.id}")
+    public String groupId;
+
+    @Value("${source.client.id}")
+    public String clientId;
+
+    @Value("${source.enable.auto.commit}")
+    public String enableAutoCommit;
+
+    @Value("${source.auto.offset.reset}")
+    public String autoOffsetReset;
+
+    private String keyDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
+
+    private String valueDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
 
     KafkaConsumer<String, String> consumer;
     ConsumerRecords<String, String> records;
@@ -37,23 +59,22 @@ public class SourceKafkaConsumer {
      */
     public SourceKafkaConsumer() {
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
-        props.put("group.id", "heroku2kafka");
-        props.put("enable.auto.commit", "false");
-        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("auto.offset.reset", "earliest");
+        props.put("bootstrap.servers", bootstrapServers);
+        props.put("group.id", groupId);
+        props.put("client.id", clientId);
+        props.put("enable.auto.commit", enableAutoCommit);
+        props.put("auto.offset.reset", autoOffsetReset);
+        props.put("key.deserializer", keyDeserializer);
+        props.put("value.deserializer", valueDeserializer);
 
         consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList("source-users-heroku"));
+        consumer.subscribe(Arrays.asList());
 
         // Initialize the records list to eliminate the need for the read to check for
         // null
         records = new ConsumerRecords<>(new HashMap<>());
         iterator = records.iterator();
-
     }
-
 
     /***
      * Method read
