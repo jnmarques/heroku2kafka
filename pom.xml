@@ -17,7 +17,6 @@
 	<properties>
 		<java.version>17</java.version>
 		<kafka.clients.version>3.5.1</kafka.clients.version>
-		<sl4j.version>2.0.7</sl4j.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -40,12 +39,6 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>
-		<!-- Add sl4f dependency -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>${sl4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

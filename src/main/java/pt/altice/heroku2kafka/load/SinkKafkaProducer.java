@@ -5,6 +5,8 @@ import java.util.concurrent.ExecutionException;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import pt.altice.heroku2kafka.models.RecordPair;
@@ -13,6 +15,7 @@ import pt.altice.heroku2kafka.models.RecordPair;
 public class SinkKafkaProducer {
 
     KafkaProducer<String, String> producer;
+    Logger logger = LoggerFactory.getLogger(SinkKafkaProducer.class);
 
     public SinkKafkaProducer() {
 
@@ -26,14 +29,9 @@ public class SinkKafkaProducer {
         producer = new KafkaProducer<>(props);
     }
 
-    public void produce(RecordPair recordPair) {
-        try {
-            producer
-                    .send(new ProducerRecord<>("sink-users-altice", recordPair.key(), recordPair.value()))
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println("Error producing to topic: " + e.getMessage());
-        }
+    public void produce(RecordPair recordPair) throws InterruptedException, ExecutionException {
+        producer.send(new ProducerRecord<>("sink-users-altice", recordPair.key(), recordPair.value()))
+                .get();
     }
 
     public void close() {
