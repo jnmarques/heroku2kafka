@@ -1,13 +1,12 @@
 package pt.altice.heroku2kafka.transform;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.stereotype.Component;
-
-import pt.altice.heroku2kafka.models.RecordPair;
 
 @Component
 public class TransformKafkaRecord {
-    public RecordPair transform(ConsumerRecord<String, String> record) {
-        return new RecordPair(record.key(), record.value());
+    public ProducerRecord<String, String> transform(ConsumerRecord<String, String> rec) {
+        return new ProducerRecord<>("sink-users-altice", null, rec.timestamp(), rec.key(), rec.value(), rec.headers());
     }
 }

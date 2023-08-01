@@ -9,8 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import pt.altice.heroku2kafka.models.RecordPair;
-
 @Component
 public class SinkKafkaProducer {
 
@@ -29,9 +27,8 @@ public class SinkKafkaProducer {
         producer = new KafkaProducer<>(props);
     }
 
-    public void produce(RecordPair recordPair) throws InterruptedException, ExecutionException {
-        producer.send(new ProducerRecord<>("sink-users-altice", recordPair.key(), recordPair.value()))
-                .get();
+    public void produce(ProducerRecord<String, String> rec) throws InterruptedException, ExecutionException {
+        producer.send(rec).get();
     }
 
     public void close() {
