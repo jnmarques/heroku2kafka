@@ -13,18 +13,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SinkKafkaProducer {
 
-    @Value("${sink.bootstrap-servers}")
-    public String bootstrapServers;
-
-    @Value("${sink.client.id}")
-    public String clientId;
-
-    @Value("${sink.acks}")
-    public String acks;
-
-    @Value("${sink.idempotence}")
-    public String idempotence;
-
     private String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
 
     private String valueSerializer = "org.apache.kafka.common.serialization.StringSerializer";
@@ -32,7 +20,11 @@ public class SinkKafkaProducer {
     KafkaProducer<String, String> producer;
     Logger logger = LoggerFactory.getLogger(SinkKafkaProducer.class);
 
-    public SinkKafkaProducer() {
+    public SinkKafkaProducer(    
+        @Value("${sink.bootstrap-servers}")String bootstrapServers,
+    @Value("${sink.client.id}")String clientId,
+    @Value("${sink.acks}")String acks,
+    @Value("${sink.idempotence}") String idempotence) {
 
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);

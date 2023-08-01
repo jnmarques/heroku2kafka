@@ -24,24 +24,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class SourceKafkaConsumer {
 
-    @Value("${source.bootstrap-servers}")
-    public String bootstrapServers;
-
-    @Value("${source.topic}")
-    public String topic;
-
-    @Value("${source.group.id}")
-    public String groupId;
-
-    @Value("${source.client.id}")
-    public String clientId;
-
-    @Value("${source.enable.auto.commit}")
-    public String enableAutoCommit;
-
-    @Value("${source.auto.offset.reset}")
-    public String autoOffsetReset;
-
     private String keyDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
 
     private String valueDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
@@ -57,7 +39,13 @@ public class SourceKafkaConsumer {
      * This class is responsible for consuming the records from the source topic
      * 
      */
-    public SourceKafkaConsumer() {
+    public SourceKafkaConsumer(
+            @Value("${source.bootstrap-servers}") String bootstrapServers,
+            @Value("${source.topic}") String topic,
+            @Value("${source.group.id}") String groupId,
+            @Value("${source.client.id}") String clientId,
+            @Value("${source.enable.auto.commit}") String enableAutoCommit,
+            @Value("${source.auto.offset.reset}") String autoOffsetReset) {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("group.id", groupId);
@@ -68,7 +56,7 @@ public class SourceKafkaConsumer {
         props.put("value.deserializer", valueDeserializer);
 
         consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList());
+        consumer.subscribe(Arrays.asList(topic));
 
         // Initialize the records list to eliminate the need for the read to check for
         // null

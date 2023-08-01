@@ -1,0 +1,14 @@
+{
+    "properties": [
+        {
+            "name": "source",
+            "type": "Mapping",
+            "description": "Configurations for the source"
+        },
+        {
+            "name": "sink",
+            "type": "Mapping",
+            "description": "Configurations for the sink"
+        }
+    ]
+}

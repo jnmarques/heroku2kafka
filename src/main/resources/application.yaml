@@ -1,15 +1,12 @@
-source:
-  bootstrap-servers: localhost:9092
-  group.id: heroku2kafka
-  client.id: heroku2kafka
-  auto.offset.reset: earliest
-  enable.auto.commit: false
-  topic: source-users-heroku
-sink:
-  bootstrap-servers: localhost:9092
-  topic: sink-users-heroku
-  client.id: heroku2kafka
-  group.id: heroku2kafka
+source.bootstrap-servers: localhost:9092
+source.group.id: heroku2kafka
+source.client.id: heroku2kafka
+source.auto.offset.reset: earliest
+source.enable.auto.commit: false
+source.topic: source-users-heroku
+sink.bootstrap-servers: localhost:9092
+sink.topic: sink-users-altice
+sink.client.id: heroku2kafka
   ## Please use "acks: all" + "idempotence: true" for exactly once delivery when producing to Kafka
-  acks: all
-  idempotence: true
+sink.acks: all
+sink.idempotence: true
