@@ -112,40 +112,39 @@ public class SourceKafkaConsumer {
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
-        if(securityProtocol != null) {
+        if (securityProtocol != null) {
             props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, securityProtocol);
         }
-        if(sslTruststoreLocation != null) {
+        if (sslTruststoreLocation != null) {
             props.put(SslConfigs.SSL_TRUSTSTORE_LOCATION_CONFIG, sslTruststoreLocation);
         }
-        if(sslTruststorePassword != null) {
+        if (sslTruststorePassword != null) {
             props.put(SslConfigs.SSL_TRUSTSTORE_PASSWORD_CONFIG, sslTruststorePassword);
         }
-        if(sslTruststoreType != null) {
+        if (sslTruststoreType != null) {
             props.put(SslConfigs.SSL_TRUSTSTORE_TYPE_CONFIG, sslTruststoreType);
         }
-        if(sslKeystoreLocation != null) {
+        if (sslKeystoreLocation != null) {
             props.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, sslKeystoreLocation);
         }
-        if(sslKeystorePassword != null) {
+        if (sslKeystorePassword != null) {
             props.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, sslKeystorePassword);
         }
-        if(sslKeystoreType != null) {
+        if (sslKeystoreType != null) {
             props.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, sslKeystoreType);
         }
-        if(sslKeyPassword != null) {
+        if (sslKeyPassword != null) {
             props.put(SslConfigs.SSL_KEY_PASSWORD_CONFIG, sslKeyPassword);
         }
-        if(sslEndpointIdentificationAlgorithm != null) {
+        if (sslEndpointIdentificationAlgorithm != null) {
             props.put(SslConfigs.SSL_ENDPOINT_IDENTIFICATION_ALGORITHM_CONFIG, sslEndpointIdentificationAlgorithm);
         }
-        if(saslMechanism != null) {
+        if (saslMechanism != null) {
             props.put(SaslConfigs.SASL_MECHANISM, saslMechanism);
         }
-        if(saslJaasConfig != null) {
+        if (saslJaasConfig != null) {
             props.put(SaslConfigs.SASL_JAAS_CONFIG, saslJaasConfig);
         }
-        
 
         consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList(topic));
@@ -178,7 +177,7 @@ public class SourceKafkaConsumer {
 
         // Advance the iterator and return the current record
         currentRecord = iterator.next();
-        logger.debug("Reading record with offset: " + currentRecord.offset());
+        logger.debug("Reading record with offset: {}", currentRecord.offset());
         return currentRecord;
     }
 
