@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -28,22 +29,22 @@ import jakarta.annotation.PostConstruct;
 @Component
 public class SourceKafkaConsumer {
 
-    @Value("${source.bootstrap-servers}")
+    @Value("${source." + ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG + "}")
     public String bootstrapServers;
 
     @Value("${source.topic}")
     public String topic;
 
-    @Value("${source.group.id:heroku2kafka}")
+    @Value("${source." + ConsumerConfig.GROUP_ID_CONFIG + ":heroku2kafka}")
     public String groupId;
 
-    @Value("${source.client.id:heroku2kafka}")
+    @Value("${source." + ConsumerConfig.CLIENT_ID_CONFIG + ":heroku2kafka}")
     public String clientId;
 
-    @Value("${source.enable.auto.commit:false}")
+    @Value("${source." + ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG + ":false}")
     public String enableAutoCommit;
 
-    @Value("${source.auto.offset.reset:earliest}")
+    @Value("${source." + ConsumerConfig.AUTO_OFFSET_RESET_CONFIG + ":earliest}")
     public String autoOffsetReset;
 
     private String keyDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
@@ -66,13 +67,13 @@ public class SourceKafkaConsumer {
     @PostConstruct
     public void init() {
         Properties props = new Properties();
-        props.put("bootstrap.servers", bootstrapServers);
-        props.put("group.id", groupId);
-        props.put("client.id", clientId);
-        props.put("enable.auto.commit", enableAutoCommit);
-        props.put("auto.offset.reset", autoOffsetReset);
-        props.put("key.deserializer", keyDeserializer);
-        props.put("value.deserializer", valueDeserializer);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        props.put(ConsumerConfig.CLIENT_ID_CONFIG, clientId);
+        props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, enableAutoCommit);
+        props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
+        props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, keyDeserializer);
+        props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, valueDeserializer);
 
         consumer = new KafkaConsumer<>(props);
         consumer.subscribe(Arrays.asList(topic));
