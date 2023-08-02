@@ -10,8 +10,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import jakarta.annotation.PostConstruct;
+
 @Component
 public class SinkKafkaProducer {
+
+    @Value("${sink.bootstrap-servers}")
+    public String bootstrapServers;
+
+    @Value("${sink.client.id}")
+    public String clientId;
+
+    @Value("${sink.acks}")
+    public String acks;
+
+    @Value("${sink.idempotence}")
+    public String idempotence;
 
     private String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
 
@@ -20,11 +34,9 @@ public class SinkKafkaProducer {
     KafkaProducer<String, String> producer;
     Logger logger = LoggerFactory.getLogger(SinkKafkaProducer.class);
 
-    public SinkKafkaProducer(    
-        @Value("${sink.bootstrap-servers}")String bootstrapServers,
-    @Value("${sink.client.id}")String clientId,
-    @Value("${sink.acks}")String acks,
-    @Value("${sink.idempotence}") String idempotence) {
+    @PostConstruct
+    public void init() {
+        logger.info("SinkKafkaProducer initializing...");
 
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
@@ -44,4 +56,5 @@ public class SinkKafkaProducer {
     public void close() {
         producer.close();
     }
+
 }

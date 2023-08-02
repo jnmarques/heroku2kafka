@@ -12,8 +12,12 @@ import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
 
 /***
  * Class SourceKafkaConsumer
@@ -24,9 +28,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class SourceKafkaConsumer {
 
+    @Value("${source.bootstrap-servers}")
+    public String bootstrapServers;
+
+    @Value("${source.topic}")
+    public String topic;
+
+    @Value("${source.group.id}")
+    public String groupId;
+
+    @Value("${source.client.id}")
+    public String clientId;
+
+    @Value("${source.enable.auto.commit}")
+    public String enableAutoCommit;
+
+    @Value("${source.auto.offset.reset}")
+    public String autoOffsetReset;
+
     private String keyDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
 
     private String valueDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
+
+    Logger logger = LoggerFactory.getLogger(SourceKafkaConsumer.class);
 
     KafkaConsumer<String, String> consumer;
     ConsumerRecords<String, String> records;
@@ -34,18 +58,13 @@ public class SourceKafkaConsumer {
     Iterator<ConsumerRecord<String, String>> iterator;
 
     /***
-     * Constructor for the SourceKafkaConsumer class
+     * Method init
      * 
-     * This class is responsible for consuming the records from the source topic
+     * 
      * 
      */
-    public SourceKafkaConsumer(
-            @Value("${source.bootstrap-servers}") String bootstrapServers,
-            @Value("${source.topic}") String topic,
-            @Value("${source.group.id}") String groupId,
-            @Value("${source.client.id}") String clientId,
-            @Value("${source.enable.auto.commit}") String enableAutoCommit,
-            @Value("${source.auto.offset.reset}") String autoOffsetReset) {
+    @PostConstruct
+    public void init() {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("group.id", groupId);
@@ -86,6 +105,7 @@ public class SourceKafkaConsumer {
 
         // Advance the iterator and return the current record
         currentRecord = iterator.next();
+        logger.info("Read record with offset: " + currentRecord.offset());
         return currentRecord;
     }
 

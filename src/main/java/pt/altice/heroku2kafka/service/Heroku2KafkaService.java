@@ -35,7 +35,7 @@ public class Heroku2KafkaService {
                 if (rec != null) {
                     try {
                         loader.produce(transformer.transform(rec));
-                        extractor.commit();
+                        commit();
                     } catch (InterruptedException e) {
                         logger.error("Interrupted while producing record", e);
                         shutdown();
@@ -54,5 +54,9 @@ public class Heroku2KafkaService {
 
     public void shutdown() {
         keepRunning = false;
+    }
+
+    public void commit() {
+        extractor.commit();
     }
 }
