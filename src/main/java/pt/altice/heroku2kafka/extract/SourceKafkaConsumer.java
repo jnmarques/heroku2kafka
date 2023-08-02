@@ -34,16 +34,16 @@ public class SourceKafkaConsumer {
     @Value("${source.topic}")
     public String topic;
 
-    @Value("${source.group.id}")
+    @Value("${source.group.id:heroku2kafka}")
     public String groupId;
 
-    @Value("${source.client.id}")
+    @Value("${source.client.id:heroku2kafka}")
     public String clientId;
 
-    @Value("${source.enable.auto.commit}")
+    @Value("${source.enable.auto.commit:false}")
     public String enableAutoCommit;
 
-    @Value("${source.auto.offset.reset}")
+    @Value("${source.auto.offset.reset:earliest}")
     public String autoOffsetReset;
 
     private String keyDeserializer = "org.apache.kafka.common.serialization.StringDeserializer";
@@ -105,7 +105,7 @@ public class SourceKafkaConsumer {
 
         // Advance the iterator and return the current record
         currentRecord = iterator.next();
-        logger.info("Read record with offset: " + currentRecord.offset());
+        logger.debug("Reading record with offset: " + currentRecord.offset());
         return currentRecord;
     }
 

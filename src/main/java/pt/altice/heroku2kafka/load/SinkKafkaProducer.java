@@ -18,13 +18,13 @@ public class SinkKafkaProducer {
     @Value("${sink.bootstrap-servers}")
     public String bootstrapServers;
 
-    @Value("${sink.client.id}")
+    @Value("${sink.client.id:heroku2kafka}")
     public String clientId;
 
-    @Value("${sink.acks}")
+    @Value("${sink.acks:all}")
     public String acks;
 
-    @Value("${sink.idempotence}")
+    @Value("${sink.idempotence:true}")
     public String idempotence;
 
     private String keySerializer = "org.apache.kafka.common.serialization.StringSerializer";
@@ -41,7 +41,7 @@ public class SinkKafkaProducer {
         Properties props = new Properties();
         props.put("bootstrap.servers", bootstrapServers);
         props.put("client.id", clientId);
-        props.put("acks", acks); // strongest producing guarantee
+        props.put("acks", acks);
         props.put("idempotence", idempotence);
         props.put("key.serializer", keySerializer);
         props.put("value.serializer", valueSerializer);
@@ -50,6 +50,7 @@ public class SinkKafkaProducer {
     }
 
     public void produce(ProducerRecord<String, String> rec) throws InterruptedException, ExecutionException {
+        logger.debug("Reading record.");
         producer.send(rec).get();
     }
 

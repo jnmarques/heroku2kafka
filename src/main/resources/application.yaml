@@ -1,15 +1,7 @@
 logging.file.name: /tmp/logs/sink-users-altice.log
 source:
   bootstrap-servers: localhost:9092
-  group.id: heroku2kafka
-  client.id: heroku2kafka
-  auto.offset.reset: earliest
-  enable.auto.commit: false
   topic: source-users-heroku
 sink:
   bootstrap-servers: localhost:9092
   topic: sink-users-altice
-  client.id: heroku2kafka
-  ## Please use "acks: all" + "idempotence: true" for exactly once delivery when producing to Kafka
-  acks: all
-  idempotence: true
