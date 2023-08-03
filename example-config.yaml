@@ -7,6 +7,6 @@ topics:
     source: source-users-heroku2
     sink: sink-users-altice2
 source:
-  bootstrap.servers: localhost:29999
+  bootstrap.servers: localhost:9092
 sink:
-  bootstrap.servers: localhost:29999
+  bootstrap.servers: localhost:9092

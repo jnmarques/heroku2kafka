@@ -38,9 +38,6 @@ public class SourceKafkaConsumer {
     @Value("${source." + ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG + "}")
     public String bootstrapServers;
 
-    @Value("${source.topic}")
-    public String topic;
-
     @Value("${source." + ConsumerConfig.GROUP_ID_CONFIG + ":heroku2kafka}")
     public String groupId;
 
