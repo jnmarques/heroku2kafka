@@ -1,0 +1,44 @@
+logging.file.name: /tmp/logs/sink-users-altice.log
+topics:
+  - 
+    source: source-users-heroku
+    sink: sink-users-altice
+  - 
+    source: source-users-heroku2
+    sink: sink-users-altice2
+source:
+  bootstrap.servers: localhost:9092
+  # SASL_SSL for user+password authentication + SSL
+  # SASL_PLAINTEXT for user+password authentication
+  # SSL for SSL only
+  security.protocol: SASL_SSL
+  ssl.key.password: my-password
+  ssl.truststore.location: ./kafka.client.truststore.pkcs12
+  ssl.truststore.password: my-password
+  ssl.truststore.type: PKCS12
+  ## ssl.keystore configs are only needed for two way SSLs
+  ssl.keystore.location: ./kafka.client.keystore.pkcs12
+  ssl.keystore.password: my-password
+  ssl.keystore.type: PKCS12
+  ssl.endpoint.identification.algorithm: 
+  # SASL configs are only needed for SASL_SSL or SASL_PLAINTEXT
+  sasl.mechanism: PLAIN
+  sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-secret";
+sink:
+  bootstrap.servers: localhost:9092
+  # SASL_SSL for user+password authentication + SSL
+  # SASL_PLAINTEXT for user+password authentication
+  # SSL for SSL only
+  security.protocol: SASL_SSL
+  ssl.key.password: my-password
+  ssl.truststore.location: ./kafka.client.truststore.pkcs12
+  ssl.truststore.password: my-password
+  ssl.truststore.type: PKCS12
+  ## ssl.keystore configs are only needed for two way SSLs
+  ssl.keystore.location: ./kafka.client.keystore.pkcs12
+  ssl.keystore.password: my-password
+  ssl.keystore.type: PKCS12
+  ssl.endpoint.identification.algorithm: 
+  # SASL configs are only needed for SASL_SSL or SASL_PLAINTEXT
+  sasl.mechanism: PLAIN
+  sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="admin" password="admin-secret";
