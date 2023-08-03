@@ -207,7 +207,10 @@ public class SourceKafkaConsumer {
      * This method is responsible for closing the consumer
      */
     public void close() {
-        consumer.close();
+        if (consumer != null) {
+            consumer.close();
+            consumer = null;
+        }
     }
 
 }

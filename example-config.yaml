@@ -1,7 +1,7 @@
 logging.file.name: /tmp/logs/sink-users-altice.log
 source:
-  bootstrap.servers: localhost:9092
+  bootstrap.servers: localhost:29999
   topic: source-users-heroku
 sink:
-  bootstrap.servers: localhost:9092
+  bootstrap.servers: localhost:29999
   topic: sink-users-altice

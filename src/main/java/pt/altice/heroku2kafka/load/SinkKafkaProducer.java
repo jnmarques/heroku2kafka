@@ -127,7 +127,10 @@ public class SinkKafkaProducer {
     }
 
     public void close() {
-        producer.close();
+        if (producer != null) {
+            producer.close();
+            producer = null;
+        }
     }
 
 }

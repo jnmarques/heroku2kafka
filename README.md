@@ -73,3 +73,16 @@ source.topic
 - **ssl.endpoint.identification.algorithm** - The endpoint identification algorithm to validate server hostname using server certificate.
 - **sasl.mechanism** - SASL mechanism used for client connections. This may be any mechanism for which a security provider is available. GSSAPI is the default mechanism.
 - **sasl.jaas.config** - JAAS login context parameters for SASL connections in the format used by JAAS configuration files. JAAS configuration file format is described <a href=\"https://docs.oracle.com/javase/8/docs/technotes/guides/security/jgss/tutorials/LoginConfigFile.html\">here</a>. The format for the value is: `loginModuleClass controlFlag (optionName=optionValue)*;`. For brokers, the config must be prefixed with listener prefix and SASL mechanism name in lower-case. For example, listener.name.sasl_ssl.scram-sha-256.sasl.jaas.config=com.example.ScramLoginModule required;
+
+# Running
+
+To run the software do:
+* Build it
+```bash
+mvn clean package
+```
+* fill a config file with the mandatory fields. Take the example-config.yaml as a reference.
+* run the jar with passing the config file as a argument
+```bash
+java -jar target/heroku2kafka-0.0.1.jar --spring.config.location=file:./example-config.yaml
+```
