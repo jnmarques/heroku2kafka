@@ -1,11 +1,11 @@
 package pt.altice.heroku2kafka.extract;
 
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
+import java.util.stream.Collectors;
 
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -18,10 +18,13 @@ import org.apache.kafka.common.config.SaslConfigs;
 import org.apache.kafka.common.config.SslConfigs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
+import pt.altice.heroku2kafka.models.TopicMapping;
+import pt.altice.heroku2kafka.models.TopicMappings;
 
 /***
  * Class SourceKafkaConsumer
@@ -96,6 +99,9 @@ public class SourceKafkaConsumer {
     ConsumerRecord<String, String> currentRecord;
     Iterator<ConsumerRecord<String, String>> iterator;
 
+    @Autowired
+    TopicMappings topics;
+
     /***
      * Method init
      * 
@@ -147,7 +153,8 @@ public class SourceKafkaConsumer {
         }
 
         consumer = new KafkaConsumer<>(props);
-        consumer.subscribe(Arrays.asList(topic));
+        // Subscribe to all the source topics
+        consumer.subscribe(topics.getTopics().stream().map(TopicMapping::source).collect(Collectors.toList()));
 
         // Initialize the records list to eliminate the need for the read to check for
         // null

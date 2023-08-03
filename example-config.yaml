@@ -1,7 +1,12 @@
 logging.file.name: /tmp/logs/sink-users-altice.log
+topics:
+  - 
+    source: source-users-heroku
+    sink: sink-users-altice
+  - 
+    source: source-users-heroku2
+    sink: sink-users-altice2
 source:
   bootstrap.servers: localhost:29999
-  topic: source-users-heroku
 sink:
   bootstrap.servers: localhost:29999
-  topic: sink-users-altice
