@@ -200,7 +200,7 @@ public class SourceKafkaConsumer {
         // Commit the current record offset
         Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
         currentOffsets.put(new TopicPartition(currentRecord.topic(), currentRecord.partition()),
-                new OffsetAndMetadata(currentRecord.offset()));
+                new OffsetAndMetadata(currentRecord.offset()+1));
         consumer.commitSync(currentOffsets);
         currentRecord = null;
     }
